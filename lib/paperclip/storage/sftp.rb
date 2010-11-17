@@ -17,14 +17,9 @@ module Paperclip
        def ssh                           
          @ssh_connection ||= Net::SSH.start(@host, @user, :password => @password)
        end
- 
-       def exists?(style = default_style)      
-         ssh.exec!("ls #{get_song_path_file} 2>/dev/null") ? true : false
-         return false
-       end
        
        def to_file(style=default_style)
-         @queued_for_write[style] || (ssh.sftp.file.open(path(style), 'rb') if exists?(style))
+         @queued_for_write[style] || (ssh.sftp.file.open(path(style), 'rb')
        end
        alias_method :to_io, :to_file
              
